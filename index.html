@@ -19,6 +19,8 @@
 
   let reflector;
 
+  let cube;
+
   init();
   animate();
 
@@ -33,6 +35,16 @@
 
     camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 10 );
     camera.position.set( 0, 1.6, 2 );
+    // camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+    let cubeGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+    let cubeMaterial = new THREE.MeshNormalMaterial();
+    cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    scene.add(cube);
+    cube.position.x -= 0
+    cube.position.y += 1
+    cube.position.z -= 2
+
 
     const torusGeometry = new THREE.TorusKnotBufferGeometry( 0.4, 0.15, 150, 20 );
     const torusMaterial = new THREE.MeshStandardMaterial( { roughness: 0.01, metalness: 0.2, envMap: background } );
@@ -41,7 +53,7 @@
     torus.position.z = - 2;
     torus.castShadow = true;
     torus.receiveShadow = true;
-    scene.add( torus );
+    // scene.add( torus );
 
     const boxGeometry = new THREE.BoxBufferGeometry( 1.5, 0.1, 1.5 );
     const boxMaterial = new THREE.MeshPhongMaterial();
@@ -142,11 +154,16 @@
   }
 
   function render() {
+    // requestAnimationFrame( animate );
+
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+
 
     const time = performance.now() * 0.0002;
     const torus = scene.children[ 0 ];
-    torus.rotation.x = time * 2 * 0;
-    torus.rotation.y = time * 5 * 0.5;
+    // torus.rotation.x = time * 2 * 0;
+    // torus.rotation.y = time * 5 * 0.5;
     // torus.position.x = 0 - time *1
     // torus.position.y = 0.75 + time
     // torus.position.z = - 2 - Math.sin(2 * 3.14 / 5 * time);
