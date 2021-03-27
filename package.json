@@ -1,7 +1,7 @@
 {
   "name": "vr-ex1",
   "version": "1.0.0",
-  "description": "",
+  "description": "For building from scratch: 1. Initialize empty node project with invoking `npm init` 1. Then add three.js library by invoking `npm install three`",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,5 +10,14 @@
   "license": "ISC",
   "dependencies": {
     "three": "^0.123.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/it-zmina/vr-ex.git"
+  },
+  "bugs": {
+    "url": "https://github.com/it-zmina/vr-ex/issues"
+  },
+  "homepage": "https://github.com/it-zmina/vr-ex#readme"
 }
