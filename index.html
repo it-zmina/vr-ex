@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <link type="text/css" rel="stylesheet" href="main.css">
+  <link rel="icon" href="logo_npz_zmina-150x150.png" sizes="32x32" />
+
 </head>
 <body>
 <script type="module">
@@ -14,6 +16,8 @@
   import { Lensflare, LensflareElement } from './jsm/objects/Lensflare.js';
   import { Reflector } from '/jsm/objects/Reflector.js';
   import { VRButton } from '/jsm/webxr/VRButton.js';
+  import { XRControllerModelFactory } from '/node_modules/three/examples/jsm/webxr/XRControllerModelFactory.js';
+
 
   let camera, scene, renderer;
 
@@ -23,7 +27,8 @@
   let cube2;
   let line;
   let textMesh;
-
+  let controller1;
+  let controllerGrip1
 
   init();
   animate();
@@ -100,14 +105,15 @@
     })
 
     // Add knot
-    // const torusGeometry = new THREE.TorusKnotBufferGeometry( 0.4, 0.15, 150, 20 );
-    // const torusMaterial = new THREE.MeshStandardMaterial( { roughness: 0.01, metalness: 0.2, envMap: background } );
-    // const torus = new THREE.Mesh( torusGeometry, torusMaterial );
-    // torus.position.y = 0.75;
-    // torus.position.z = - 2;
-    // torus.castShadow = true;
-    // torus.receiveShadow = true;
-    // scene.add( torus );
+    const torusGeometry = new THREE.TorusKnotBufferGeometry( 0.4, 0.15, 150, 20 );
+    const torusMaterial = new THREE.MeshStandardMaterial( { roughness: 0.01, metalness: 0.2, envMap: background } );
+    const torus = new THREE.Mesh( torusGeometry, torusMaterial );
+    torus.position.x = 1;
+    torus.position.y = 2;
+    torus.position.z = - 2;
+    torus.castShadow = true;
+    torus.receiveShadow = true;
+    scene.add( torus );
 
     const boxGeometry = new THREE.BoxBufferGeometry( 1.5, 0.1, 1.5 );
     const boxMaterial = new THREE.MeshPhongMaterial();
@@ -188,6 +194,37 @@
 
     //
 
+    // Add controller
+    controller1 = renderer.xr.getController( 0 );
+    // controller1.addEventListener( 'selectstart', onSelectStart );
+    // controller1.addEventListener( 'selectend', onSelectEnd );
+    scene.add( controller1 );
+
+    // Add controller grip object
+
+    // const controllerModelFactory = new XRControllerModelFactory();
+    // controllerGrip1 = renderer.xr.getControllerGrip( 0 );
+    // controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
+    // scene.add( controllerGrip1 );
+
+    const controlLineGeometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
+    // const controlLineGeometry = new THREE.BufferGeometry().setFromPoints( [
+    //   new THREE.Vector3( 0, 0, 0 ),
+    //   new THREE.Vector3( 0, 0, -1 ),
+    //   new THREE.Vector3( 0, .2, -1 ),
+    //   new THREE.Vector3( .2, .2, -1 ),
+    //   new THREE.Vector3( .2, -.2, -1 ),
+    //   new THREE.Vector3( -.2, -.2, -1 ),
+    //   new THREE.Vector3( -.2, .2, -1 ),
+    // ] );
+
+    const controlLine = new THREE.Line( controlLineGeometry );
+    line.name = 'line';
+    line.scale.z = 5;
+
+    controller1.add( controlLine.clone() );
+
+    //
     window.addEventListener( 'resize', onWindowResize, false );
 
   }
