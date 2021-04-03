@@ -12,6 +12,9 @@
 <script type="module">
 
   import * as THREE from '/node_modules/three/build/three.module.js';
+  import {
+    RingGeometry
+  } from '/node_modules/three/build/three.module.js'
 
   import { Lensflare, LensflareElement } from './jsm/objects/Lensflare.js';
   import { Reflector } from '/jsm/objects/Reflector.js';
@@ -23,12 +26,12 @@
 
   let reflector;
 
-  let cube;
-  let cube2;
-  let line;
-  let textMesh;
-  let controller1;
-  let controllerGrip1
+  let cube
+  let cube2
+  let line
+  let textMesh
+  let controller1, controller2
+  let controllerGrip1, controllerGrip2
 
   init();
   animate();
@@ -200,12 +203,20 @@
     // controller1.addEventListener( 'selectend', onSelectEnd );
     scene.add( controller1 );
 
+    // Second controller
+    controller2 = renderer.xr.getController( 1 );
+    scene.add( controller2 );
+
     // Add controller grip object
 
-    // const controllerModelFactory = new XRControllerModelFactory();
-    // controllerGrip1 = renderer.xr.getControllerGrip( 0 );
-    // controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
-    // scene.add( controllerGrip1 );
+    const controllerModelFactory = new XRControllerModelFactory();
+    controllerGrip1 = renderer.xr.getControllerGrip( 0 );
+    controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
+    scene.add( controllerGrip1 );
+
+    controllerGrip2 = renderer.xr.getControllerGrip( 1 );
+    controllerGrip2.add( controllerModelFactory.createControllerModel( controllerGrip2 ) );
+    scene.add( controllerGrip2 );
 
     const controlLineGeometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
     const controlLineGeometry2 = new THREE.BufferGeometry().setFromPoints( [
@@ -216,16 +227,33 @@
       new THREE.Vector3( .2, .2, -1 ),
     ] );
 
+    const controlLineMaterial = new THREE.LineBasicMaterial( { color: 0x0000ff } );
     const controlLine = new THREE.Line( controlLineGeometry );
     const controlLine2 = new THREE.Line( controlLineGeometry2 );
     controlLine.name = 'line';
     controlLine.scale.z = 5;
     const gripGroup = new THREE.Group();
-    gripGroup.add(controlLine)
-    gripGroup.add(controlLine2)
+    gripGroup.add(controlLine.clone())
+    gripGroup.add(controlLine2.clone())
 
     // controller1.add( controlLine.clone() );
     controller1.add( gripGroup );
+
+    // Second controller line
+
+    const gripGroup2 = new THREE.Group();
+    controlLine.material = controlLineMaterial
+    gripGroup2.add(controlLine)
+
+    const controlRingGeometry = new RingGeometry(.2, .21, 32, 1, 0, Math.PI)
+    controlRingGeometry.parameters.innerRadius = .2
+    controlRingGeometry.parameters.outerRadius = .21
+
+    const controlRingMaterial = new THREE.MeshBasicMaterial( { color: 0x46a0d2, side: THREE.DoubleSide } );
+    const controlRing = new THREE.Mesh( controlRingGeometry, controlRingMaterial )
+    controlRing.position.z = -1
+    gripGroup2.add( controlRing )
+    controller2.add( gripGroup2 );
 
     //
     window.addEventListener( 'resize', onWindowResize, false );
