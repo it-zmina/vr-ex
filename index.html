@@ -208,21 +208,24 @@
     // scene.add( controllerGrip1 );
 
     const controlLineGeometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
-    // const controlLineGeometry = new THREE.BufferGeometry().setFromPoints( [
-    //   new THREE.Vector3( 0, 0, 0 ),
-    //   new THREE.Vector3( 0, 0, -1 ),
-    //   new THREE.Vector3( 0, .2, -1 ),
-    //   new THREE.Vector3( .2, .2, -1 ),
-    //   new THREE.Vector3( .2, -.2, -1 ),
-    //   new THREE.Vector3( -.2, -.2, -1 ),
-    //   new THREE.Vector3( -.2, .2, -1 ),
-    // ] );
+    const controlLineGeometry2 = new THREE.BufferGeometry().setFromPoints( [
+      new THREE.Vector3( .2, .2, -1 ),
+      new THREE.Vector3( .2, -.2, -1 ),
+      new THREE.Vector3( -.2, -.2, -1 ),
+      new THREE.Vector3( -.2, .2, -1 ),
+      new THREE.Vector3( .2, .2, -1 ),
+    ] );
 
     const controlLine = new THREE.Line( controlLineGeometry );
-    line.name = 'line';
-    line.scale.z = 5;
+    const controlLine2 = new THREE.Line( controlLineGeometry2 );
+    controlLine.name = 'line';
+    controlLine.scale.z = 5;
+    const gripGroup = new THREE.Group();
+    gripGroup.add(controlLine)
+    gripGroup.add(controlLine2)
 
-    controller1.add( controlLine.clone() );
+    // controller1.add( controlLine.clone() );
+    controller1.add( gripGroup );
 
     //
     window.addEventListener( 'resize', onWindowResize, false );
